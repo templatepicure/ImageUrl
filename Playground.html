@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<title>Sandbox & Faliyet Alanı Konseptleri</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* GENEL TASARIM */
+:root {
+  --primary: #4361ee;
+  --primary-light: #4895ef;
+  --secondary: #3f37c9;
+  --accent: #f72585;
+  --light: #f8f9fa;
+  --dark: #212529;
+  --gray: #6c757d;
+  --gray-light: #e9ecef;
+  --border-radius: 16px;
+  --shadow: 0 10px 30px rgba(0,0,0,0.08);
+  --transition: all 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #f5f7fb 0%, #e8edf5 100%);
+  margin: 0;
+  padding: 20px;
+  color: var(--dark);
+  line-height: 1.6;
+}
+
+/* ANA KUTU */
+.page {
+  max-width: 1400px;
+  margin: auto;
+  background: #fff;
+  border-radius: var(--border-radius);
+  padding: 30px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+/* BÖLÜM BAŞLIKLARI */
+.section-title {
+  font-size: 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 20px 0 30px;
+  color: var(--dark);
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+/* ÜRÜN KARTI */
+.card {
+  background: var(--light);
+  border-radius: var(--border-radius);
+  padding: 0;
+  border: none;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.card-header {
+  padding: 20px 20px 15px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+
+/* ÜRÜN BAŞLIK */
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.card-content {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* GÖRSELLER */
+.image-container {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  background: white;
+  margin-bottom: 15px;
+  border: 1px solid var(--gray-light);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition);
+}
+
+.image-container img:hover {
+  transform: scale(1.05);
+}
+
+/* ALT BAŞLIK */
+.sub-title {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-top: 15px;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+}
+
+.sub-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 14px;
+  background: var(--accent);
+  margin-right: 8px;
+  border-radius: 2px;
+}
+
+/* LİSTE */
+ul {
+  padding-left: 20px;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+ul li {
+  margin-bottom: 5px;
+  position: relative;
+}
+
+ul li::marker {
+  color: var(--primary-light);
+}
+
+/* MALZEME BİLGİSİ */
+.material-info {
+  background: var(--gray-light);
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin: 10px 0;
+  font-weight: 500;
+  color: var(--dark);
+  border-left: 4px solid var(--primary);
+  display: flex;
+  align-items: center;
+}
+
+.material-info i {
+  margin-right: 8px;
+  color: var(--primary);
+}
+
+/* TEKNİK ÖZELLİKLER */
+.tech-specs {
+  background: rgba(67, 97, 238, 0.05);
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: auto;
+}
+
+.spec-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(0,0,0,0.1);
+}
+
+.spec-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.spec-label {
+  font-weight: 500;
+  color: var(--gray);
+}
+
+.spec-value {
+  font-weight: 600;
+  color: var(--dark);
+}
+
+/* ADET BİLGİSİ */
+.quantity-info {
+  background: rgba(247, 37, 133, 0.1);
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin: 5px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.quantity-info i {
+  margin-right: 6px;
+}
+
+/* ETİKET */
+.tag {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+/* FİLTRELEME BUTONLARI */
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.filter-btn {
+  background: white;
+  border: 1px solid var(--gray-light);
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.filter-btn.active, .filter-btn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+/* RESPONSIVE DÜZENLEMELER */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  
+  .page {
+    padding: 20px;
+  }
+  
+  .section-title {
+    font-size: 24px;
+  }
+  
+  .filter-buttons {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+  
+  .page {
+    padding: 15px;
+  }
+  
+  .card-header {
+    padding: 15px 15px 10px;
+  }
+  
+  .card-content {
+    padding: 15px;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <h2 class="section-title">Playground Products</h2>
+  
+  <!-- Filtreleme Butonları -->
+  <div class="filter-buttons">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="sandbox">Farm and Tiny Play Houses Zone</button>
+    <button class="filter-btn" data-filter="activity">Mud and Painting Zone</button>
+    <button class="filter-btn" data-filter="mini">Sandbox and Jumping and Playing Zone</button>
+    <button class="filter-btn" data-filter="mud">Interactive Panels</button>
+    <button class="filter-btn" data-filter="play">Playing Zones</button>
+  </div>
+
+  <div class="grid">
+
+    <!-- Sandbox Type 1 -->
+    <div class="card" data-category="mini">
+      <div class="card-header">
+        <div class="card-title">Sandbox Type 1</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/sandbox%201.PNG?raw=true" alt="Sandbox Type 1">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 Set
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Playhouse</li>
+          <li>Swing Set</li>
+          <li>Sandbox</li>
+          <li>Seating Group</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">7×7 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">3,5 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">3-12 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sandbox Type 2 -->
+    <div class="card" data-category="mini">
+      <div class="card-header">
+        <div class="card-title">Sandbox Type 2</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/sandbox%202.PNG?raw=true" alt="Sandbox Type 2">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 Set
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Sandbox</li>
+          <li>Edges Seating Area</li>
+          <li>Canopy</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">3×3 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">2 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">3-12 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sandbox Type 3 -->
+    <div class="card" data-category="mini">
+      <div class="card-header">
+        <div class="card-title">Sandbox Type 3</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/sand%20box%203.PNG?raw=true" alt="Sandbox Type 3">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 Set
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Stranded Pirate Ship</li>
+          <li>Sandbox</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">6×7 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">3 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">3-12 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Field of Activity -->
+    <div class="card" data-category="mini">
+      <div class="card-header">
+        <div class="card-title">Field of Activity</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/Field%20of%20Activity.PNG?raw=true" alt="Field of Activity">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 Set
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Hopscotch Playground</li>
+          <li>Bridge</li>
+          <li>Tunnel</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">6×7 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">3 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">3-10 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mini Playground Area Type 1 -->
+    <div class="card" data-category="mini">
+      <div class="card-header">
+        <div class="card-title">Mini Playground Area Type 1</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/Mini%20Playground%20Area%201.PNG?raw=true" alt="Mini Playground Area Type 1">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 Set
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Playhouse with Slides</li>
+          <li>Swing Set</li>
+          <li>Trampoline</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">6×6 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">2 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">3-12 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mini Playground Area Type 2 -->
+    <div class="card" data-category="mini">
+      <div class="card-header">
+        <div class="card-title">Mini Playground Area Type 2</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/Mini%20Playground%20Area%202.PNG?raw=true" alt="Mini Playground Area Type 2">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 Set
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Playground with 2 towers and swings</li>
+          <li>Trampoline</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">8×8 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">3,5 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">3-12 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Triangle Bungalow -->
+    <div class="card" data-category="activity">
+      <div class="card-header">
+        <div class="card-title">Triangle Bungalow</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/Bungalov.PNG?raw=true" alt="Triangle Bungalow">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 pcs
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Triangle Bungalow</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">3,5×2 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">2,5 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">3-15 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mudbox -->
+    <div class="card" data-category="activity">
+      <div class="card-header">
+        <div class="card-title">Mudbox</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/%C3%A7amur%20havuz.PNG?raw=true" alt="Mudbox">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 pcs
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Mudbox</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">1×1 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">0,3 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">2-8 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mud Kitchen -->
+    <div class="card" data-category="activity">
+      <div class="card-header">
+        <div class="card-title">Mud Kitchen</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/mud%20kitchen%204.png?raw=true" alt="Mud Kitchen">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 Set
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Mud Kitchen</li>
+          <li>Shelves</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">2×2 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">1 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">2-8 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mud Table -->
+    <div class="card" data-category="activity">
+      <div class="card-header">
+        <div class="card-title">Mud Table</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/%C3%A7amur%20masa.PNG?raw=true" alt="Mud Table">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 pcs
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Mud Table</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">2×0,7 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">0,7 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">2-8 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Art Easel Panel -->
+    <div class="card" data-category="activity">
+      <div class="card-header">
+        <div class="card-title">Art Easel Panel</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/a%C4%9Fa%C3%A7%20k%C3%BCt%C3%BCk%20resim.PNG?raw=true" alt="Art Easel Panel">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 pcs
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Transparent Painting Panel</li>
+          <li>Natural Logs</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">1,5x0,6 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">0,7 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">3-10 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Outdoor Wooden Art Easel -->
+    <div class="card" data-category="activity">
+      <div class="card-header">
+        <div class="card-title">Outdoor Wooden Art Easel</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/%C5%9Eovalyeler.PNG?raw=true" alt="Outdoor Wooden Art Easel">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 2 pcs
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Wooden Easel</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">0,8×0,6 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">1,2 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">4-12 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plant Nursery -->
+    <div class="card" data-category="sandbox">
+      <div class="card-header">
+        <div class="card-title">Plant Nursery</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/saks%C4%B1alr.PNG?raw=true" alt="Plant Nursery">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 6 pcs
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Plant Growing Pots</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">2×1 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">0,25 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">4-10 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Playhouse -->
+    <div class="card" data-category="sandbox">
+      <div class="card-header">
+        <div class="card-title">Playhouse</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/oyun%20evi%20tabureli.PNG?raw=true" alt="Playhouse">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 Set
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Playhouse</li>
+          <li>2 pcs stools</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">1×2 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">2 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">4-10 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Caravan Cafe -->
+    <div class="card" data-category="sandbox">
+      <div class="card-header">
+        <div class="card-title">Caravan Cafe</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/karavan.PNG?raw=true" alt="Caravan Cafe">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 Set
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Caravan Design</li>
+          <li>Service Window</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">2,5×1m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">2 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">4-10 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Playgrocery Store -->
+    <div class="card" data-category="sandbox">
+      <div class="card-header">
+        <div class="card-title">Playgrocery Store</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/manav.PNG?raw=true" alt="Playgrocery Store">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 Set
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Market Shelves</li>
+          <li>Case Area</li>
+          <li>Baskets</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">2,5×1 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">2 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">4-10 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Playkitchen -->
+    <div class="card" data-category="sandbox">
+      <div class="card-header">
+        <div class="card-title">Playkitchen</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/mutfak%20oyun.PNG?raw=true" alt="Playkitchen">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 Set
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Kitchen Countertop</li>
+          <li>Stove and Sink</li>
+          <li>Kitchenware</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">2×0,7 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">1,5 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">4-10 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Playhouse and Recreation Area -->
+    <div class="card" data-category="sandbox">
+      <div class="card-header">
+        <div class="card-title">Playhouse and Recreation Area</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/oyun%20evi%20sal%C4%B1ncakl%C4%B1.PNG?raw=true" alt="Playhouse and Recreation Area">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 Set
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Playhouse</li>
+          <li>Recreation Area</li>
+          <li>Swing</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">3×3 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">2,5 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">3-10 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational Panel -->
+    <div class="card" data-category="mud">
+      <div class="card-header">
+        <div class="card-title">Educational Panel</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/d%C3%BCz%20e%C4%9Fitici%20panel.PNG?raw=true" alt="Educational Panel">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 pcs
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Educational Game</li>
+          <li>Puzzle</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">1×0,25 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">1,0 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">2-6 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Earth Observation Panel -->
+    <div class="card" data-category="mud">
+      <div class="card-header">
+        <div class="card-title">Earth Observation Panel</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/kum%20g%C3%B6zlem.PNG?raw=true" alt="Earth Observation Panel">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 pcs
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Different types of soil between glass</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">3×0,25 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">0,75 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">4-10 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational Game Panel -->
+    <div class="card" data-category="mud">
+      <div class="card-header">
+        <div class="card-title">Educational Game Panel</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/a%C4%9Fa%C3%A7%20yaprak%20paneli.PNG?raw=true" alt="Educational Game Panel">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 pcs
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>It aims to recognize trees, learn leaf shapes, develop nature awareness and play matching games.</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">1,25×0,25 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">1,25 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">3-8 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Musical Instruments (except Piano and Trumpet) -->
+    <div class="card" data-category="mud">
+      <div class="card-header">
+        <div class="card-title">Musical Instruments (except Piano and Trumpet)</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/m%C3%BCzik%20aleti.PNG?raw=true" alt="Musical Instruments">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 Set
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Outdoor Xylophone</li>
+          <li>Outdoor Ground Drums</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex and Stainless Steel
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">3×3 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">1 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">3-10 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Abacus House -->
+    <div class="card" data-category="mud">
+      <div class="card-header">
+        <div class="card-title">Abacus House</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/abak%C3%BCs%20ev.PNG?raw=true" alt="Abacus House">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 Set
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Playhouse</li>
+          <li>xox game</li>
+          <li>Abacus</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">2,5×0,35 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">2,5 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">4-10 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Play Ground -->
+    <div class="card" data-category="play">
+      <div class="card-header">
+        <div class="card-title">Playground</div>
+      </div>
+      <div class="card-content">
+        <div class="image-container">
+          <img src="https://github.com/templatepicure/ImageUrl/blob/main/oyun%20grubu%20b%C3%BCy%C3%BCk.PNG?raw=true" alt="Play Ground">
+        </div>
+
+        <div class="quantity-info">
+          <i class="fas fa-cube"></i> 1 Pcs
+        </div>
+
+        <div class="sub-title">Contents</div>
+        <ul>
+          <li>Fully inclusive playground</li>
+        </ul>
+
+        <div class="material-info">
+          <i class="fas fa-tree"></i> Finnish pine or Larex,Playwood,Stainless Steel,Hot Galvanized Pipes
+        </div>
+
+        <div class="tech-specs">
+          <div class="sub-title">Technical Specifications</div>
+          <div class="spec-item">
+            <span class="spec-label">Space Requirement:</span>
+            <span class="spec-value">18x13,5 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max. Height:</span>
+            <span class="spec-value">10,3 m</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Age group:</span>
+            <span class="spec-value">3-12 age</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Filtreleme işlevi
+document.addEventListener('DOMContentLoaded', function() {
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.card');
+  
+  filterButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      // Aktif butonu güncelle
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+      
+      const filterValue = this.getAttribute('data-filter');
+      
+      // Kartları filtrele
+      cards.forEach(card => {
+        if (filterValue === 'all') {
+          card.style.display = 'flex';
+        } else {
+          if (card.getAttribute('data-category').includes(filterValue)) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        }
+      });
+    });
+  });
+});
+</script>
+
+</body>
+</html>
